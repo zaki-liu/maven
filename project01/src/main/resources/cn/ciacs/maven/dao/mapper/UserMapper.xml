@@ -3,16 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ciacs.maven.dao.mapper.UserMapper">
-<!--  
-	//添加用户
-	int addUser(User user);
-	//更新用户信息
-	void updateUser(User user);
-	//删除用户信息
-	void deleteUserByUserId(int userId);
-	//根据用户名查找用户
-	User findUserByUsername(String username);
--->
+
 	<insert id="addUser" parameterType="User" keyProperty="userId" useGeneratedKeys="true">
 		insert into user(username,password,registDate) values(#{username},#{password},#{registDate});
 	</insert>
@@ -28,20 +19,4 @@
 	<select id="findUserByUsername" parameterType="String" resultType="User">
 		select * from user where username = #{username};
 	</select>
-	
-	
-	<!--  
-
-	<insert id="addToken" parameterType="Token" useGeneratedKeys="true" keyProperty="tokenId">
-		INSERT INTO
-		token(accessToken,expireIn,createTime)
-		VALUES(#{accessToken},#{expireIn},#{createTime});
-	</insert>
-	<resultMap type="Token" id="tokenMap">  
-        <id column="tokenId" property="tokenId"/>  
-        <result column="accessToken" property="accessToken"/>  
-        <result column="expireIn" property="expireIn"/>  
-        <result column="createTime" property="createTime"/>  
-    </resultMap>  
-    -->
 </mapper>
