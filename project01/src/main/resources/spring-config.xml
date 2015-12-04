@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-4.2.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+           http://www.springframework.org/schema/task
+		   http://www.springframework.org/schema/task/spring-task-4.2.xsd">
+      
+    <!-- task任务扫描注解 -->
+    <task:annotation-driven/>
+    
+    <!-- 加载属性文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+     <property name="location" value="classpath:maven.properties" />
+     </bean>
+    
+     <import resource="classpath:spring-datasource.xml" />
+	
+	
+	<!-- 扫描包含注解的类所在的包 -->	
+     <context:component-scan base-package="cn.ciacs.maven.util"></context:component-scan>
+	 <context:component-scan base-package="cn.ciacs.maven.service"></context:component-scan>
+     <context:component-scan base-package="cn.ciacs.maven.dao"></context:component-scan>
+      
+      
+    <!-- 配置数据库的配置文件 -->  
+      <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation">
+            <value>classpath:mybatis-config.xml</value>
+        </property>
+         <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+     </bean>
+     
+     <!-- 配置扫描mapper所在包的位置 -->
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	    <property name="basePackage" value="cn.ciacs.maven.dao.mapper" />
+	</bean>
+
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" isolation="READ_COMMITTED" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="zfServiceOperation" expression="execution(* cn.ciacs.maven.service..*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="zfServiceOperation"/>
+    </aop:config>
+</beans>

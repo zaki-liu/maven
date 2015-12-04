@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS `user`;  
+CREATE TABLE `user` (  
+  `userId` int(20) NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `username` VARCHAR(30) DEFAULT NULL COMMENT '用户名',
+  `password` VARCHAR(30) DEFAULT NULL COMMENT '密码',
+  `registDate` DATE DEFAULT NULL COMMENT '注册时间',
+  PRIMARY KEY (`userId`)  
+) ENGINE=INNODB  DEFAULT CHARSET=utf8; 
+COMMIT; 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>		
+    <properties resource="maven.properties">
+    	<!--活动状态-->
+    	<property name="activity.status.ongoing" value="0"/>
+    	<property name="activity.status.pause" value="1"/>
+    	<property name="activity.status.finish" value="2"/>
+    	<property name="activity.status.draft" value="3"/>
+    	<property name="activity.status.waiting" value="4"/>
+    </properties>
+    <settings>
+        <setting name="cacheEnabled" value="false" />
+        <setting name="lazyLoadingEnabled" value="true" />
+        <setting name="multipleResultSetsEnabled" value="false" />
+        <setting name="useColumnLabel" value="true" />    
+        <setting name="defaultExecutorType" value="REUSE" />     
+        <setting name="defaultStatementTimeout" value="2000"/>
+    </settings>    
+    <typeAliases>
+    <!-- 存放module类 -->
+    <!--  
+    <typeAlias alias="AttendInfo"  type="cn.bidaround.vote.module.AttendInfo"/>
+	-->
+	<typeAlias alias="User" type="cn.ciacs.maven.module.User"/>
+	
+    </typeAliases>
+    
+	<environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC">                
+            </transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driverClass}" />
+                <property name="url" value="${jdbcUrl}" />
+                <property name="username" value="${username}" />
+                <property name="password" value="${password}" />
+            </dataSource>           
+        </environment>		
+    </environments>    
+</configuration>
